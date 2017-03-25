@@ -161,17 +161,18 @@ cur.execute(query)
 for row in cur:
     tweet_posted_times.append(row)
 print ("Below is the list")
-print (tweet_posted_times)
+# print (tweet_posted_times)
 conn.commit()
 
 # Select all of the tweets (the full rows/tuples of information) that have been retweeted MORE than 2 times,
 # and fetch them into the variable more_than_2_rts.
 more_than_2_rts = []
-query = "SELECT tweet_text FROM Tweets WHERE retweets > 2;"
+query = "SELECT * FROM Tweets WHERE retweets > 2;"
 cur.execute(query)
-for num in cur:
-    more_than_2_rts.append(num)
-print (more_than_2_rts[3][:2])
+more_than_2_rts = cur.fetchall()
+print ("below ar rts")
+
+print (more_than_2_rts)
 
 
 
@@ -187,7 +188,7 @@ for row in cur:
     if row[0].startswith("RT"):
         rowstr = row[0]
         first_rt_lst.append(rowstr)
-print (first_rt_lst)
+# print (first_rt_lst)
 first_rt = first_rt_lst[0]
 
 
@@ -200,9 +201,9 @@ conn.close()
 
 # Define a function get_twitter_users that accepts a string as in put and returns a SET of the
 # _twitter screennames_ of each twitter user who was mentioned in that string.
-
 # Note that the syntax for mentions in a tweet is that the username is preceded by an "@" character,
-# e.g. "@umsi" or "@aadl", and cannot contain any punctuation besides underscores -- that's how to determine what user names are mentioned. (e.g. @hello? is just the username "hello", but @programmer_at_umsi is "programmer_at_umsi").
+# e.g. "@umsi" or "@aadl", and cannot contain any punctuation besides underscores -- that's how to determine what user names are mentioned.
+# (e.g. @hello? is just the username "hello", but @programmer_at_umsi is "programmer_at_umsi").
 
 #re.match and getting the 0th group from the MatchObject may be useful for you here...
 # reminder: http://stackoverflow.com/questions/15340582/python-extract-pattern-matches
@@ -218,6 +219,15 @@ conn.close()
 # If you want to challenge yourself here -- this function definition
 #  (what goes under the def statement) CAN be written in one line! Definitely,
 # definitely fine to write it with multiple lines, too, which will be much easier and clearer.
+def get_twitter_users(user_str):
+    name = re.findall("\@([^ ,?.]*)", user_str)
+    name_set = set(name)
+    return name_set
+print("tttttt")
+print (get_twitter_users("@twitter_user_4, what did you think of the comment by @twitteruser5?"))
+
+
+
 
 
 
